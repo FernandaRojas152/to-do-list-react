@@ -7,7 +7,7 @@ import { CreateTodoButton } from './CreateTodoButton';
 
 //import './App.css';
 
-const todos = [
+const defaultTodos = [
   { text: 'Apreciar a Xiao', completed: true },
   { text: 'Aprender React', completed: false },
   { text: 'Ir a La Universidad', completed: false },
@@ -15,13 +15,36 @@ const todos = [
 ];
 
 function App() {
+  const [todos, setTodos] = React.useState(defaultTodos);
+  const [searchValue, setSearchValue]= React.useState('');
+  const completedTodos = todos.filter(todo => todo.completed).length;
+  let filterTodos= [];
+  
+  if(!searchValue.length >= 1){
+    filterTodos= todos;
+  }else{
+    filterTodos= todos.filter(todo => todo.text.toLowerCase().includes(searchValue.toLowerCase()));
+    /* todos.filter(todo =>{
+      const todoText= todo.text.toLowerCase();
+      const filterText= searchValue.toLowerCase();
+      return todoText.includes(filterText);
+    }) */
+  }
+  const totalTodos= todos.length;
+
   return (
     <React.Fragment> {/** Se utiliza cuando vamos a usar varios componentes dentro de un mismo componente. */}
-      <TodoCounter />
-      <TodoSearch />
+      <TodoCounter
+        total={totalTodos}
+        completed={completedTodos}
+      />
+      <TodoSearch
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
+      />
 
       <TodoList>
-        {todos.map(todo => (
+        {filterTodos.map(todo => (
           <TodoItem
           key={todo.text}
           text={todo.text}
