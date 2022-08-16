@@ -30,7 +30,22 @@ function App() {
       return todoText.includes(filterText);
     }) */
   }
+
   const totalTodos= todos.length;
+
+  const completeTodos= (text) => {
+    const todoIndex= todos.findIndex(todo => todo.text === text);
+    const newTodos= [...todos];
+    newTodos[todoIndex].completed= !newTodos[todoIndex].completed;
+    setTodos(newTodos);
+  }
+
+  const deleteTodos= (text) => {
+    const todoIndex= todos.findIndex(todo => todo.text === text);
+    const newTodos= [...todos];
+    newTodos.splice(todoIndex, 1);
+    setTodos(newTodos);
+  }
 
   return (
     <React.Fragment> {/** Se utiliza cuando vamos a usar varios componentes dentro de un mismo componente. */}
@@ -49,6 +64,8 @@ function App() {
           key={todo.text}
           text={todo.text}
           completed={todo.completed}
+          onComplete={() => completeTodos(todo.text)}
+          onDelete={() => deleteTodos(todo.text)}
           />
         ))}
       </TodoList>
