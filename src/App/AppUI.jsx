@@ -1,31 +1,23 @@
 import React from 'react';
+import { TodoContext } from '../TodoContext/index.jsx';
 import { TodoCounter } from '../components/TodoCounter/TodoCounter.jsx';
 import { TodoSearch } from '../components/TodoSearch/TodoSearch.jsx';
 import { TodoList } from '../components/TodoList/TodoList.jsx';
 import { TodoItem } from '../components/TodoItem/TodoItem.jsx';
 import { CreateTodoButton } from '../components/CreateTodoButton/CreateTodoButton.jsx';
 
-function AppUI({
-    totalTodos,
-    completedTodos,
-    searchValue,
-    setSearchValue,
-    filterTodos,
-    completeTodos,
-    deleteTodos,
-}) {
+function AppUI() {
+    const { error, loading, filterTodos, completeTodos, deleteTodos } = React.useContext(TodoContext);
     return (
         <React.Fragment> {/** Se utiliza cuando vamos a usar varios componentes dentro de un mismo componente. */}
-            <TodoCounter
-                total={totalTodos}
-                completed={completedTodos}
-            />
-            <TodoSearch
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-            />
+            <TodoCounter />
+            <TodoSearch />
 
             <TodoList>
+                {error && <p>Error...</p>}
+                {loading && <p>Loading...</p>}
+                {(!loading && !filterTodos.length) && <p> Create your first Todo </p>}
+
                 {filterTodos.map(todo => (
                     <TodoItem
                         key={todo.text}
