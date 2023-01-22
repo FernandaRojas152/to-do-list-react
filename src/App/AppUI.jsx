@@ -4,10 +4,18 @@ import { TodoCounter } from '../components/TodoCounter/TodoCounter.jsx';
 import { TodoSearch } from '../components/TodoSearch/TodoSearch.jsx';
 import { TodoList } from '../components/TodoList/TodoList.jsx';
 import { TodoItem } from '../components/TodoItem/TodoItem.jsx';
+import { TodoForm } from '../components/TodoForm';
 import { CreateTodoButton } from '../components/CreateTodoButton/CreateTodoButton.jsx';
+import {Modal} from "../Modal/"
 
 function AppUI() {
-    const { error, loading, filterTodos, completeTodos, deleteTodos } = React.useContext(TodoContext);
+    const { error,
+        loading,
+        filterTodos,
+        completeTodos,
+        deleteTodos,
+        openModal,
+        setOpenModal } = React.useContext(TodoContext);
     return (
         <React.Fragment> {/** Se utiliza cuando vamos a usar varios componentes dentro de un mismo componente. */}
             <TodoCounter />
@@ -28,7 +36,15 @@ function AppUI() {
                     />
                 ))}
             </TodoList>
-            <CreateTodoButton />
+
+            {!!openModal && (<Modal>
+                <TodoForm />
+            </Modal>
+            )}
+
+            <CreateTodoButton>
+                setOpenModal= {setOpenModal}
+            </CreateTodoButton>
 
 
         </React.Fragment>
